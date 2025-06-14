@@ -4,7 +4,6 @@ import com.belajar.sales.dtos.HttpResponse;
 import com.belajar.sales.dtos.IPubersVersionResponseDto;
 import com.belajar.sales.exceptionHandler.exception.CallHttpException;
 import com.belajar.sales.services.ExternalService;
-import com.belajar.sales.utils.WebClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +30,8 @@ public class HttpController {
     public ResponseEntity<HttpResponse<?>> call_error(){
         try{
             var result = externalService.callError();
+            if(result.equals("API failed"))
+                throw new CallHttpException("API failed","");
             return ResponseEntity.ok(new HttpResponse<String>(result, 200, "Error"));
         }
         catch (CallHttpException e){

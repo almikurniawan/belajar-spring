@@ -60,7 +60,7 @@ public class SaleService {
             return true;
         }
         catch(Exception e){
-            return false;
+            throw new RuntimeException(e);
         }
     }
 }

@@ -23,10 +23,14 @@ public class SaleController {
 
     @PostMapping
     public ResponseEntity<?> createSale(@Valid @RequestBody List<SaleRequestDto> saleRequestDto) {
-        var create = saleService.save(saleRequestDto);
-        if(create){
-            return ResponseEntity.ok(new HttpResponse<String>("berhasil create penjualan",200, "Success"));
-        }else{
+        try{
+            var create = saleService.save(saleRequestDto);
+            if(create){
+                return ResponseEntity.ok(new HttpResponse<String>("berhasil create penjualan",200, "Success"));
+            }else{
+                return ResponseEntity.status(500).body(new HttpResponse<String>("gagal create penjualan",500, "Failur"));
+            }
+        } catch (RuntimeException e) {
             return ResponseEntity.status(500).body(new HttpResponse<String>("gagal create penjualan",500, "Failur"));
         }
     }

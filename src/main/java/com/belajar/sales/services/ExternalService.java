@@ -4,6 +4,8 @@ import com.belajar.sales.dtos.IPubersVersionResponseDto;
 import com.belajar.sales.entities.ErrorRetry;
 import com.belajar.sales.exceptionHandler.exception.CallHttpException;
 import com.belajar.sales.repositories.IErrorRetryRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
@@ -17,6 +19,8 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 public class ExternalService {
+    private static final Logger logger = LoggerFactory.getLogger(ExternalService.class);
+
     @Autowired
     public WebClient webClient;
 
@@ -38,6 +42,7 @@ public class ExternalService {
                     .block();
             return result;
         }catch (Exception e){
+            logger.error("error panggil ipubers : "+e.getMessage());
             throw new CallHttpException("API failed",payload);
         }
     }
